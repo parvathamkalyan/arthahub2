@@ -29,17 +29,14 @@ function saveData(data) {
 }
 
 function seedProducts() {
-  // Replace with real products pulled from Amazon/Flipkart/Meesho once
-  // your affiliate accounts are approved. This seed data lets you see
-  // the full site working before those accounts exist.
   return [
     {
       id: 'p1',
       title: 'Wireless Earbuds',
       price: 1499,
       category: 'Electronics',
-      platform: 'amazon',
-      rawUrl: 'https://www.amazon.in/dp/EXAMPLE1',
+      platform: 'earnkaro',
+      rawUrl: 'https://fktr.in/20YJds6',
       image: 'https://placehold.co/400x400?text=Earbuds'
     },
     {
@@ -47,8 +44,8 @@ function seedProducts() {
       title: 'Study Desk Lamp',
       price: 699,
       category: 'Home',
-      platform: 'flipkart',
-      rawUrl: 'https://www.flipkart.com/EXAMPLE2',
+      platform: 'earnkaro',
+      rawUrl: 'https://fktr.in/L12O6pR',
       image: 'https://placehold.co/400x400?text=Desk+Lamp'
     },
     {
@@ -56,8 +53,8 @@ function seedProducts() {
       title: 'Cotton Backpack',
       price: 899,
       category: 'Fashion',
-      platform: 'meesho',
-      rawUrl: 'https://www.meesho.com/EXAMPLE3',
+      platform: 'earnkaro',
+      rawUrl: 'https://fktr.in/6Is6zLS',
       image: 'https://placehold.co/400x400?text=Backpack'
     }
   ];
@@ -65,6 +62,8 @@ function seedProducts() {
 
 // Build the real affiliate link for a product depending on platform
 function buildAffiliateLink(product) {
+  const url = new URL(product.rawUrl);
+   if (product.platform === 'earnkaro') return product.rawUrl;
   const url = new URL(product.rawUrl);
   if (product.platform === 'amazon' && process.env.AMAZON_ASSOCIATE_TAG) {
     url.searchParams.set('tag', process.env.AMAZON_ASSOCIATE_TAG);
