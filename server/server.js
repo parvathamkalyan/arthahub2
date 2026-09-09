@@ -62,8 +62,7 @@ function seedProducts() {
 
 // Build the real affiliate link for a product depending on platform
 function buildAffiliateLink(product) {
-  const url = new URL(product.rawUrl);
-   if (product.platform === 'earnkaro') return product.rawUrl;
+  if (product.platform === 'earnkaro') return product.rawUrl;
   const url = new URL(product.rawUrl);
   if (product.platform === 'amazon' && process.env.AMAZON_ASSOCIATE_TAG) {
     url.searchParams.set('tag', process.env.AMAZON_ASSOCIATE_TAG);
