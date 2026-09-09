@@ -1,0 +1,16 @@
+{
+  "name": "arthahub",
+  "version": "1.0.0",
+  "description": "ArthaHub - affiliate marketing platform with product feed, blog, dashboard and AI guide chat",
+  "main": "server/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "dotenv": "^16.4.5",
+    "cors": "^2.8.5"
+  }
+}

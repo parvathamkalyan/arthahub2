@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — ArthaHub</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav wrap">
+  <div class="brand">Artha<span>Hub</span></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Guides</a>
+    <a href="dashboard.html">Dashboard</a>
+  </div>
+</nav>
+
+<main class="wrap" style="padding-top:48px;">
+  <h2 class="section-title">Earnings dashboard</h2>
+  <p style="color:var(--ink-soft); max-width:60ch; margin-bottom:8px;">
+    Clicks are tracked here in real time — this is the leading indicator you control.
+    Actual commission ₹ amounts are reported by Amazon/Flipkart/Meesho on their own
+    dashboards and paid to your bank on their schedule (usually monthly); this page
+    does not connect to your bank account.
+  </p>
+
+  <div class="stat-row" id="stats"></div>
+
+  <table>
+    <thead>
+      <tr><th>Product</th><th>Clicks</th></tr>
+    </thead>
+    <tbody id="product-rows"></tbody>
+  </table>
+</main>
+
+<footer class="wrap">
+  <p>ArthaHub internal analytics — for real commission totals, check your affiliate network dashboards directly.</p>
+</footer>
+
+<script src="guide.js"></script>
+<script>
+  async function loadDashboard() {
+    const res = await fetch('/api/dashboard');
+    const data = await res.json();
+
+    document.getElementById('stats').innerHTML = `
+      <div class="stat"><div class="num">${data.totalClicks}</div><div class="label">Total clicks</div></div>
+      <div class="stat"><div class="num">${data.products.length}</div><div class="label">Products live</div></div>
+    `;
+
+    document.getElementById('product-rows').innerHTML = data.products.map(p => `
+      <tr><td>${p.title}</td><td>${p.clicks}</td></tr>
+    `).join('');
+  }
+  loadDashboard();
+</script>
+
+</body>
+</html>

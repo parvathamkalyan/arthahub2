@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArthaHub — honest picks, best prices</title>
+<meta name="description" content="Hand-picked product recommendations with the best prices across Amazon, Flipkart and Meesho.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav wrap">
+  <div class="brand">Artha<span>Hub</span></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Guides</a>
+    <a href="dashboard.html">Dashboard</a>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div>
+    <h1>Picks worth<br>your money.</h1>
+    <p>Every product here is checked for price and quality before it's listed. Click through, buy from your usual store — we earn a small commission at no extra cost to you.</p>
+  </div>
+  <div class="price-mark">₹<small>best price, tracked daily</small></div>
+</header>
+
+<main class="wrap">
+  <h2 class="section-title">Today's picks</h2>
+  <div class="grid" id="product-grid">
+    <p>Loading products…</p>
+  </div>
+</main>
+
+<footer class="wrap">
+  <p>ArthaHub participates in the Amazon Associates, Flipkart Affiliate and Meesho Affiliate programs. Links on this site may earn a commission on qualifying purchases.</p>
+</footer>
+
+<script src="guide.js"></script>
+<script>
+  async function loadProducts() {
+    const grid = document.getElementById('product-grid');
+    try {
+      const res = await fetch('/api/products');
+      const products = await res.json();
+      grid.innerHTML = products.map(p => `
+        <div class="card">
+          <img src="${p.image}" alt="${p.title}">
+          <div class="card-body">
+            <div class="card-cat">${p.category} · ${p.platform}</div>
+            <h3>${p.title}</h3>
+            <div class="card-price">₹${p.price}</div>
+            <button class="btn" onclick="goToProduct('${p.id}')">View deal</button>
+          </div>
+        </div>
+      `).join('');
+    } catch (e) {
+      grid.innerHTML = '<p>Could not load products. Is the server running?</p>';
+    }
+  }
+
+  async function goToProduct(id) {
+    const res = await fetch('/api/click', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ productId: id })
+    });
+    const data = await res.json();
+    window.open(data.redirect, '_blank');
+  }
+
+  loadProducts();
+</script>
+
+</body>
+</html>
